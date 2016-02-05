@@ -1,12 +1,33 @@
+out = ""
+power = ""
+
+leftBTN=8                      -- Select input pin - GPIO13
+gpio.mode(leftBTN,gpio.INT,gpio.PULLUP)
+gpio.trig(leftBTN, "down", leftDown)
+
+function leftDown()
+    print("Left button pressed")
+    tmr.delay(50)                          -- time delay for switch debounce
+    gpio.trig(leftBTN, "up", leftUp)  -- change trigger on falling edge
+end
+
+function leftUp()
+    print("Left button released")
+    tmr.delay(50)                          -- time delay for switch debounce
+    gpio.trig(leftBTN, "down", leftDown)  -- change trigger on falling edge
+end
+
 -- Display layout
 function drawOLED()
     disp:firstPage()
         repeat
-            disp:drawLine(0, 18, 128, 18)
-            disp:drawStr(0, 0, "2000W")
-            disp:drawStr(100, 0, "10 C")
-            disp:drawStr(0, 20, track)
-            disp:drawStr(0, 40, artist)
+            disp:drawLine(0, 11, 128, 11)
+            disp:drawStr(0, 0, power.."W")
+            disp:drawStr(100, 0, out.." C")
+            disp:drawStr(0, 15, track)
+            disp:drawStr(0, 30, artist)
+            disp:drawStr(0, 54, "Play")
+            disp:drawStr(100, 54, "Next")
     until disp:nextPage() == false
 end
 
@@ -18,8 +39,13 @@ m:on("message", function(conn, topic, data)
   if topic == "/sonos/livingroom/artist" then
     artist = data
   end
-  if topic == "/ivy/out" then
+  if topic == "/ivt/out" then
     out = data
+    print("IVT Out:"..data)
+  end
+  if topic == "/power/watt" then
+    power = data
+    print("Power Watt:"..data)
   end
   if artist ~= nil and track  ~= nil then
   print(artist.." - "..track)
@@ -38,6 +64,9 @@ m:connect(MQTT_HOST, MQTT_PORT, 0, function(conn)
     end)
     m:subscribe("/ivt/#",0, function(conn) 
         print("Subscribed to ivt") 
+    end)
+    m:subscribe("/power/watt",0, function(conn) 
+        print("Subscribed to power") 
     end)
 end)
 

@@ -21,7 +21,10 @@ m:on("connect", function(m)
     print ("\n\n", MQTT_CLIENTID, " connected to MQTT host ", MQTT_HOST,
         " on port ", MQTT_PORT, "\n\n")
 end)
-m:on("offline", function(m) print ("Offline") end)
+m:on("offline", function(m)
+    print ("Offline")
+    node.restart()
+end)
 
 dofile("sonos.lua")
 
