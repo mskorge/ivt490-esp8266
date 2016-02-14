@@ -1,9 +1,12 @@
 out = ""
 power = ""
 
-leftBTN=8                      -- Select input pin - GPIO13
-gpio.mode(leftBTN,gpio.INT,gpio.PULLUP)
-gpio.trig(leftBTN, "down", leftDown)
+leftBTN=3
+gpio.mode(leftBTN, gpio.INT, gpio.PULLUP)
+
+
+rightBTN=7                      
+gpio.mode(rightBTN,gpio.INT,gpio.PULLUP)
 
 function leftDown()
     print("Left button pressed")
@@ -15,6 +18,18 @@ function leftUp()
     print("Left button released")
     tmr.delay(50)                          -- time delay for switch debounce
     gpio.trig(leftBTN, "down", leftDown)  -- change trigger on falling edge
+end
+
+function rightDown()
+    print("Right button pressed")
+    tmr.delay(50)                          -- time delay for switch debounce
+    gpio.trig(rightBTN, "up", rightUp)  -- change trigger on falling edge
+end
+
+function rightUp()
+    print("Right button released")
+    tmr.delay(50)                          -- time delay for switch debounce
+    gpio.trig(rightBTN, "down", rightDown)  -- change trigger on falling edge
 end
 
 -- Display layout
@@ -71,3 +86,5 @@ m:connect(MQTT_HOST, MQTT_PORT, 0, function(conn)
 end)
 
 init_OLED(5,6)
+gpio.trig(leftBTN, "down", leftDown)
+gpio.trig(rightBTN, "down", rightDown)
