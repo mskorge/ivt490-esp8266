@@ -8,22 +8,38 @@ gpio.mode(leftBTN, gpio.INT, gpio.PULLUP)
 rightBTN=7                      
 gpio.mode(rightBTN,gpio.INT,gpio.PULLUP)
 
+function volDown()
+    if(gpio.read(3) == 0) then
+            print("volDown")
+            tmr.alarm(1, 500, 0, volDown)
+    end
+end
+
+function volUp()
+    if(gpio.read(7) == 0) then
+            print("volUp")
+            tmr.alarm(1, 500, 0, volUp)
+    end
+end
+
 function leftDown()
     print("Left button pressed")
-    tmr.delay(50)                          -- time delay for switch debounce
-    gpio.trig(leftBTN, "up", leftUp)  -- change trigger on falling edge
+    tmr.delay(50)
+    tmr.alarm(0, 1000, 0, volDown)
+    gpio.trig(leftBTN, "up", leftUp)
 end
 
 function leftUp()
     print("Left button released")
-    tmr.delay(50)                          -- time delay for switch debounce
-    gpio.trig(leftBTN, "down", leftDown)  -- change trigger on falling edge
+    tmr.delay(50)
+    gpio.trig(leftBTN, "down", leftDown)
 end
 
 function rightDown()
     print("Right button pressed")
-    tmr.delay(50)                          -- time delay for switch debounce
-    gpio.trig(rightBTN, "up", rightUp)  -- change trigger on falling edge
+    tmr.delay(50)
+    tmr.alarm(0, 1000, 0, volUp)
+    gpio.trig(rightBTN, "up", rightUp)
 end
 
 function rightUp()
