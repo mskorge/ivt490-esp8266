@@ -26,6 +26,6 @@ m:on("offline", function(m)
     node.restart()
 end)
 
-— Run branch-specific program
-—-dofile(“example.lua")
+-- Run branch-specific program
+-- dofile("example.lua")
 
