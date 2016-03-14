@@ -1,14 +1,3 @@
-function init_OLED(sda,scl) --Set up the u8glib lib
-     sla = 0x3C
-     i2c.setup(0, sda, scl, i2c.SLOW)
-     disp = u8g.ssd1306_128x64_i2c(sla)
-     disp:setFont(u8g.font_6x10)
-     disp:setFontRefHeightExtendedText()
-     disp:setDefaultForegroundColor()
-     disp:setFontPosTop()
-     --disp:setRot180()           -- use it for rotate display
-end
-
 m = mqtt.Client(MQTT_CLIENTID, 60, "", "") -- Living dangerously. No password!
 
 -- Set up Last Will and Testament (optional)
@@ -26,6 +15,6 @@ m:on("offline", function(m)
     node.restart()
 end)
 
-— Run branch-specific program
-—-dofile(“example.lua")
-dofile(“ivt.lua")
+-- Run branch-specific program
+-- dofile("example.lua")
+dofile("ivt.lua")
