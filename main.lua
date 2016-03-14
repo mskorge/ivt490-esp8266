@@ -26,5 +26,6 @@ m:on("offline", function(m)
     node.restart()
 end)
 
-dofile("sonos.lua")
+— Run branch-specific program
+—-dofile(“example.lua")
 
