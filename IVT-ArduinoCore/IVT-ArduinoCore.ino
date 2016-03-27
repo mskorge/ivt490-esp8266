@@ -87,6 +87,7 @@ void reconnect() {
 
 void mqttCommand(char* payload) {
   Serial.println("Publishing command");
+  Serial.println(payload);
   client.publish("/ivt/output", payload);
   }
 
@@ -129,22 +130,55 @@ void splitString ()
   inputString = "";
   commaPosition = 0;
 
-  StaticJsonBuffer<200> jsonBuffer;
+  StaticJsonBuffer<800> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
-  root["out"] = ivt[2];
-  root["in"] = ivt[6];
-  root["gt1"] = ivt[1];
-  root["gt31"] = ivt[3];
-  root["el"] = ivt[33];
-  root["comp"] = ivt[13];
-  root.prettyPrintTo(Serial);
+  
+  root["framledn"] = ivt[1];
+  root["ute"] = ivt[2];
+  root["tappvarmv"] = ivt[3];
+  root["varmev1"] = ivt[4];
+  root["varmev2"] = ivt[5];
+  root["inne"] = ivt[6];
+  root["hetgas"] = ivt[7];
+  root["egtemp"] = ivt[8];
+  root["tryckvakt"] = ivt[9];
+  root["hogtryck"] = ivt[10];
+  root["lagtryck"] = ivt[11];
+  root["egsemester"] = ivt[12];
+  root["kompressor"] = ivt[13];
+  root["schuntoppen"] = ivt[14];
+  root["schuntstangd"] = ivt[15];
+  root["cirkpump"] = ivt[16];
+  //root["18"] = ivt[17];
+  root["larm"] = ivt[18];
+  //root["20"] = ivt[19];
+  //root["21"] = ivt[20];
+  //root["22"] = ivt[21];
+  root["bvframledning"] = ivt[22];
+  //root["24"] = ivt[23];
+  //root["25"] = ivt[24];
+  //root["26"] = ivt[25];
+  //root["27"] = ivt[26];
+  //root["28"] = ivt[27];
+  //root["29"] = ivt[28];
+  root["extravv1"] = ivt[29];
+  root["extravv2"] = ivt[30];
+  root["extravv3"] = ivt[31];
+  //root["33"] = ivt[32];  
+  root["elpatron"] = ivt[33];
+  //root["35"] = ivt[34];
+  root["extravv4"] = ivt[35];
+  //root["37"] = ivt[36];
+  
+  //root.prettyPrintTo(Serial);
 
-  char buffer[256];
+  char buffer[800];
   root.printTo(buffer, sizeof(buffer));
 
   memset(ivt, 0, sizeof ivt);
   stringComplete = false;
 
+  Serial.println(buffer);
   mqttCommand(buffer);
   
 }
