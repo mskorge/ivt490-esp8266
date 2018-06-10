@@ -1,8 +1,4 @@
-/*
- *  IVT 490 serial to MQTT
- *  Michael Skorge
- */
-
+#include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <SoftwareSerial.h>
 #include <ArduinoJson.h>
@@ -57,7 +53,6 @@ void setup_wifi() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 }
-
 
 void setup() {
     Serial.begin(115200);
@@ -182,7 +177,6 @@ void splitString ()
   
 }
 
-
 void loop() {
   if (!client.connected()) {
     reconnect();
@@ -197,6 +191,4 @@ void loop() {
     splitString();
     delay(50);
   }
-  
 }
-
