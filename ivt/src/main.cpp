@@ -112,14 +112,14 @@ void setup() {
   WiFiManagerParameter custom_blynk_token("blynk", "blynk token", blynk_token, 32);
 
   //WiFiManager
-  //Local intialization. Once its business is done, there is no need to keep it around
+  //Local intialization. Once its business is done, there is no need to keep it aroundd
   WiFiManager wifiManager;
 
   //set config save notify callback
   wifiManager.setSaveConfigCallback(saveConfigCallback);
 
   //set static ip
-  wifiManager.setSTAStaticIPConfig(IPAddress(10,0,1,99), IPAddress(10,0,1,1), IPAddress(255,255,255,0));
+  wifiManager.setSTAStaticIPConfig(IPAddress(192,168,2,224), IPAddress(192,168,2,99), IPAddress(255,255,255,0));
   
   //add all your parameters here
   wifiManager.addParameter(&custom_mqtt_server);
@@ -142,7 +142,7 @@ void setup() {
   //if it does not connect it starts an access point with the specified name
   //here  "AutoConnectAP"
   //and goes into a blocking loop awaiting configuration
-  if (!wifiManager.autoConnect("AutoConnectAP", "password")) {
+  if (!wifiManager.autoConnect("IVT-Configure", "Rego")) {
     Serial.println("failed to connect and hit timeout");
     delay(3000);
     //reset and try again, or maybe put it to deep sleep
@@ -279,7 +279,7 @@ void splitString ()
   memset(ivt, 0, sizeof ivt);
   stringComplete = false;
 
-  Serial.println(buffer);
+  //Serial.println(buffer);
   mqttCommand(buffer);
   
 }
